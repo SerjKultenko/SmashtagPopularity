@@ -32,7 +32,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="SmashTweetTableViewControllerID" title="Tweets Search" id="qGf-I8-8L8" customClass="SmashTweetTableViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="96" sectionHeaderHeight="28" sectionFooterHeight="28" id="BUP-RG-V78">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <textField key="tableHeaderView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Twitter Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="aA2-ap-w5U">
@@ -206,7 +206,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="ReW-eq-4C9">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="back-action-image" id="zMz-Iz-GFW">
+                        <barButtonItem key="rightBarButtonItem" image="back-action-image" id="zMz-Iz-GFW">
                             <connections>
                                 <action selector="webBackButtonAction:" destination="lNy-WJ-yqM" id="iDi-Mo-WGi"/>
                             </connections>
@@ -261,7 +261,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="iul-dV-3h5">
                         <barButtonItem key="backBarButtonItem" title="Back" id="H2z-iV-xn2"/>
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="backward-image" id="MkV-F7-8BL">
+                        <barButtonItem key="rightBarButtonItem" image="backward-image" id="MkV-F7-8BL">
                             <connections>
                                 <action selector="backwardAction:" destination="hWd-jh-LR2" id="ozZ-2Q-jrt"/>
                             </connections>
@@ -427,6 +427,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="qGf-I8-8L8" kind="show" id="Wpo-mw-h9F"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -519,6 +522,6 @@
         <image name="picture-image" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="J7V-rc-XCK"/>
+        <segue reference="olE-bP-8xC"/>
     </inferredMetricsTieBreakers>
 </document>

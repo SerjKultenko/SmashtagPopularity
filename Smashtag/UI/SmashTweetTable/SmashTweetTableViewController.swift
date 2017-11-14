@@ -25,7 +25,7 @@ class SmashTweetTableViewController: TweetTableViewController
     }
     
     private func updateDatabase(with tweets: [Twitter.Tweet], forSearchRequest searchText: String) {
-        container?.performBackgroundTask { /*[weak self]*/ context in
+        container?.performBackgroundTask { context in
             let searchEntity = try? SearchResult.findOrCreateSearchResult(forSearchResult: searchText, in: context)
             
             for twitterInfo in tweets {
@@ -34,12 +34,14 @@ class SmashTweetTableViewController: TweetTableViewController
                 if let searchEntity = searchEntity, let tweetEntity = tweetEntity {
                     for hashTagMention in twitterInfo.hashtags {
                         _ = try? TweetMention.updateOrCreateTweetMention(withKeyword: hashTagMention.keyword,
+                                                                         mentionType: "HashTags",
                                                                          forTweetEntity: tweetEntity,
                                                                          inSearchRequest: searchEntity,
                                                                          inContext: context)
                     }
                     for userMention in twitterInfo.userMentions {
                         _ = try? TweetMention.updateOrCreateTweetMention(withKeyword: userMention.keyword,
+                                                                         mentionType: "User",
                                                                          forTweetEntity: tweetEntity,
                                                                          inSearchRequest: searchEntity,
                                                                          inContext: context)

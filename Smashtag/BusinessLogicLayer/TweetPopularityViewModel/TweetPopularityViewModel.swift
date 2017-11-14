@@ -31,6 +31,7 @@ class TweetPopularityViewModel {
         let request: NSFetchRequest<TweetMention> = TweetMention.fetchRequest()
 
         request.sortDescriptors = [
+            NSSortDescriptor(key: "type", ascending: true),
             NSSortDescriptor(key: "popularity", ascending: false),
             NSSortDescriptor(
                 key: "keyword",
@@ -40,7 +41,7 @@ class TweetPopularityViewModel {
 
         request.predicate = NSPredicate(format: "(popularity > 1) and (search.searchText like[c] %@)", searchString)
 
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.persistentContainer!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.persistentContainer!.viewContext, sectionNameKeyPath: "type", cacheName: nil)
         
         return fetchedResultsController
     }

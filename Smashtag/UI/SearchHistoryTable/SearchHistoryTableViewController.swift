@@ -10,13 +10,13 @@ import UIKit
 
 class SearchHistoryTableViewController: UITableViewController, TweetSearchHistoryUse, DependencyInjectorUse, TweetSearchHistoryDelegate
 {
-    
     // MARK: - Vars
     var tweetSearchHistory: TweetSearchHistory? {
         didSet {
             tweetSearchHistory?.delegate = self
         }
     }
+    
     var dependencyInjector: DependencyInjector?
 
     // MARK: - VC Life Cycle
@@ -27,7 +27,6 @@ class SearchHistoryTableViewController: UITableViewController, TweetSearchHistor
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true;
     }
-
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,7 +79,7 @@ class SearchHistoryTableViewController: UITableViewController, TweetSearchHistor
             if let vc = segue.destination as? PopularityViewController,
                 let cell = sender as? UITableViewCell
             {
-                //dependencyInjector?.inject(to: tweetsVC)
+                dependencyInjector?.inject(to: vc)
                 if cell.textLabel?.text != nil {
                     vc.viewModel = TweetPopularityViewModel(withSearchString: cell.textLabel!.text!)
                 }

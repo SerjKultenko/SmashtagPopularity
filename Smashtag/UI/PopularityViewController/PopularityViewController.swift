@@ -9,8 +9,10 @@
 import UIKit
 import CoreData
 
-class PopularityViewController: UITableViewController {
+class PopularityViewController: UITableViewController, DependencyInjectorUse {
 
+    var dependencyInjector: DependencyInjector?
+    
     var viewModel: TweetPopularityViewModel? {
         didSet {
             updateUI()
@@ -32,26 +34,51 @@ class PopularityViewController: UITableViewController {
     }
 
     // MARK: - UITableViewDataSource
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel?.fetchedResultsController?.sections?.count ?? 1
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.fetchedResultsController?.fetchedObjects?.count ?? 0
+        if let sections = viewModel?.fetchedResultsController?.sections, sections.count > 0 {
+            return sections[section].numberOfObjects
+        } else {
+            return 0
+        }
     }
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let sections = viewModel?.fetchedResultsController?.sections, sections.count > 0 {
+            return sections[section].name
+        } else {
+            return nil
+        }
+    }
+
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return viewModel?.fetchedResultsController?.sectionIndexTitles
+    }
+    
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return viewModel?.fetchedResultsController?.section(forSectionIndexTitle: title, at: index) ?? 0
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetPopularityTableViewCell", for: indexPath)
         
         if let tweetMention = viewModel?.fetchedResultsController?.object(at: indexPath) {
             cell.textLabel?.text = tweetMention.keyword
-            //let tweetCount = tweetCountWithMentionBy(twitterUser)
-            cell.detailTextLabel?.text = "\(tweetMention.popularity)" //"\(tweetCount) tweet\((tweetCount == 1) ? "" : "s")"
+            cell.detailTextLabel?.text = "\(tweetMention.popularity)"
         }
-        
         return cell
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let tweetSearchVC = segue.destination as? SmashTweetTableViewController,
+            let cell = sender as? UITableViewCell
+        {
+            dependencyInjector?.inject(to: tweetSearchVC)
+            tweetSearchVC.searchText = cell.textLabel?.text
+        }
     }
-
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetPicturesViewController: UIViewController {
+class TweetPicturesViewController: UIViewController, DependencyInjectorUse {
 
     var currentScale: CGFloat = 1
     let cellAreaOneSideSize: CGFloat = 100.0

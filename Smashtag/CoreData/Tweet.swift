@@ -32,16 +32,6 @@ class Tweet: NSManagedObject
         tweet.text = twitterInfo.text
         tweet.created = twitterInfo.created
         tweet.tweeter = try? TwitterUser.findOrCreateTwitterUser(matching: twitterInfo.user, in: context)
-//        for hashtag in twitterInfo.hashtags {
-//            let mention = TweetMention(context: context)
-//            mention.keyword = hashtag.keyword
-//            mention.tweet = tweet
-//        }
-//        for userMention in twitterInfo.userMentions {
-//            let mention = TweetMention(context: context)
-//            mention.keyword = userMention.keyword
-//            mention.tweet = tweet
-//        }
         return tweet
     }
 }

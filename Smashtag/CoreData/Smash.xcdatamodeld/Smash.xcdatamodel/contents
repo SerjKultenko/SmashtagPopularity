@@ -2,7 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="SearchResult" representedClassName=".SearchResult" syncable="YES" codeGenerationType="category">
         <attribute name="searchText" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TweetMention" inverseName="search" inverseEntity="TweetMention" syncable="YES"/>
+        <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TweetMention" inverseName="search" inverseEntity="TweetMention" syncable="YES"/>
     </entity>
     <entity name="Tweet" representedClassName=".Tweet" syncable="YES" codeGenerationType="category">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -14,6 +14,7 @@
     <entity name="TweetMention" representedClassName=".TweetMention" syncable="YES" codeGenerationType="category">
         <attribute name="keyword" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="popularity" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="search" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SearchResult" inverseName="mentions" inverseEntity="SearchResult" syncable="YES"/>
         <relationship name="tweet" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="mentions" inverseEntity="Tweet" syncable="YES"/>
     </entity>
@@ -23,9 +24,9 @@
         <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="tweeter" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <elements>
+        <element name="SearchResult" positionX="-585" positionY="-1602" width="128" height="75"/>
         <element name="Tweet" positionX="-432" positionY="-1836" width="128" height="118"/>
-        <element name="TweetMention" positionX="-324" positionY="-1644" width="128" height="103"/>
+        <element name="TweetMention" positionX="-324" positionY="-1644" width="128" height="120"/>
         <element name="TwitterUser" positionX="-648" positionY="-1854" width="128" height="88"/>
-        <element name="SearchResult" positionX="-585" positionY="-1602" width="128" height="73"/>
     </elements>
 </model>

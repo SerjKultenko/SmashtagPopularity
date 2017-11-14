@@ -16,12 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var tweetSearchHistory = TweetSearchHistory()
     var dependencyInjector = DependencyInjector()
+    fileprivate lazy var dataBasePruningService = DataBasePruningService(withPersistentContainer: persistentContainer)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         _ = tweetSearchHistory.loadHistory()
         dependencyInjector.tweetSearchHistory = tweetSearchHistory
+        tweetSearchHistory.removalDelegate = dataBasePruningService
         
         if let vc = window?.rootViewController?.contents as? UITabBarController,
             let viewControllers = vc.viewControllers {

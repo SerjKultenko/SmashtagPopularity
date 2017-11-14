@@ -12,6 +12,10 @@ protocol TweetSearchHistoryDelegate: NSObjectProtocol {
     func tweetSearchHistoryDidChange(tweetSearchHistory: TweetSearchHistory)
 }
 
+protocol TweetSearchHistoryElementsDeleteDelegate: NSObjectProtocol {
+    func tweetSearchHistoryElementsDidRemove(searchTerms: [String])
+}
+
 class TweetSearchHistory: Codable {
     private var searches:[String] = [] {
         didSet {
@@ -21,7 +25,8 @@ class TweetSearchHistory: Codable {
     }
     
     weak var delegate: TweetSearchHistoryDelegate? = nil
-    
+    weak var removalDelegate: TweetSearchHistoryElementsDeleteDelegate? = nil
+
     private enum CodingKeys: String, CodingKey {
         case searches
     }
@@ -54,11 +59,18 @@ class TweetSearchHistory: Codable {
         let index = searches.index { (string) -> Bool in
             return term.localizedCaseInsensitiveCompare(string) == .orderedSame
         }
-        guard index == nil else {
-            return
+        if (index != nil) {
+            if index! == 0 {
+                //Search term is already at the first place
+                return
+            }
+            searches.remove(at: index!)
         }
         if searches.count > 99 {
-                searches.removeLast(searches.count - 99)
+            let searchTerms = [String](searches.suffix(searches.count - 99))
+            searches.removeLast(searches.count - 99)
+
+            removalDelegate?.tweetSearchHistoryElementsDidRemove(searchTerms: searchTerms)
         }
         searches.insert(term, at: 0)
     }
@@ -67,7 +79,9 @@ class TweetSearchHistory: Codable {
         guard searches.count > position else {
             return
         }
+        let searchTerm = searches[position]
         searches.remove(at: position)
+        removalDelegate?.tweetSearchHistoryElementsDidRemove(searchTerms: [searchTerm])
     }
 
     private let kTweetSearchesHistoryKey = "TweetSearchesHistoryKey"

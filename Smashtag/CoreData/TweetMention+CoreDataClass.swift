@@ -13,9 +13,10 @@ import CoreData
 
 class TweetMention: NSManagedObject {
     class func updateOrCreateTweetMention(withKeyword keyword: String,
-                                        forTweetEntity tweetEntity: Tweet,
-                                        inSearchRequest searchRequest:SearchResult,
-                                        inContext context: NSManagedObjectContext) throws -> TweetMention
+                                          mentionType type: String,
+                                          forTweetEntity tweetEntity: Tweet,
+                                          inSearchRequest searchRequest:SearchResult,
+                                          inContext context: NSManagedObjectContext) throws -> TweetMention
     {
         let request: NSFetchRequest<TweetMention> = TweetMention.fetchRequest()
         request.predicate = NSPredicate(format: "(search = %@) and (keyword like[c] %@)", searchRequest, keyword)
@@ -23,7 +24,7 @@ class TweetMention: NSManagedObject {
         do {
             let matches = try context.fetch(request)
             if matches.count > 0 {
-                assert(matches.count == 1, "Tweet.findOrCreateTweet -- database inconsistency")
+                assert(matches.count == 1, "TweetMention.updateOrCreateTweetMention -- database inconsistency")
                 let entity = matches[0]
                 entity.addToTweet(tweetEntity)
                 entity.popularity = Int64(entity.tweet?.count ?? 0)
@@ -35,6 +36,7 @@ class TweetMention: NSManagedObject {
         
         let entity = TweetMention(context: context)
         entity.keyword = keyword
+        entity.type = type
         entity.search = searchRequest
         entity.addToTweet(tweetEntity)
         entity.popularity = Int64(entity.tweet?.count ?? 0)
